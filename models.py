@@ -283,7 +283,7 @@ class MNISTModel(FLModel):
 
 
 
-class CIFAR10ModelBN(FLModel):
+class CIFAR10Model(FLModel):
     """
     Convolutional model with two (Conv -> ReLU -> MaxPool -> BN) blocks, and one 
     fully connected hidden layer. Categorical Cross Entropy loss.
