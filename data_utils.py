@@ -154,7 +154,7 @@ def load_mnist(data_dir, W, iid, user_test=False):
 
 
 
-def load_cifar(data_dir, W, iid, per_user_test=False):
+def load_cifar(data_dir, W, iid, user_test=False):
     """
     Load the CIFAR dataset. The folder specified by data_dir should contain the
     python version pickle files from (cs.toronto.edu/~kriz/cifar.html). 
@@ -171,9 +171,11 @@ def load_cifar(data_dir, W, iid, per_user_test=False):
         array. If user_test is True, the test variables will also be lists, 
         otherwise the returned test values are just 4D numpy arrays.
     """
-    # files containing CIFAR data, converted to numpy arrays and pickled
-    fnames = ['/data_batch_1.pkl', '/data_batch_2.pkl', '/data_batch_3.pkl',
-              '/data_batch_4.pkl', '/data_batch_5.pkl']
+    fnames = [  '/data_batch_1', 
+                '/data_batch_2', 
+                '/data_batch_3',
+                '/data_batch_4', 
+                '/data_batch_5']
 
     # create big arrays to store all CIFAR train data, load and assign
     x_train = np.zeros((50000, 32, 32, 3), dtype=np.float32)
@@ -181,15 +183,23 @@ def load_cifar(data_dir, W, iid, per_user_test=False):
 
     for i in range(len(fnames)):
         with open(data_dir+fnames[i], 'rb') as f:
-            data = pickle.load(f)
-        x_train[i*10000:(i+1)*10000, :, :, :] = data[0]
-        y_train[i*10000:(i+1)*10000] = np.argmax(data[1], axis=1)
+            data_dict = pickle.load(f, encoding='bytes')
+        
+        images = data_dict[b'data'].reshape((10000, 32, 32, 3), order='F')
+        images = np.rot90(images, k=3, axes=(1, 2)) / 255.0
+        labels = np.array(data_dict[b'labels'])
+        
+        x_train[i*10000:(i+1)*10000, :, :, :] = images
+        y_train[i*10000:(i+1)*10000]          = labels
+        
 
     # load test set data
-    with open(data_dir+'/test_batch.pkl', 'rb') as f:
-        data = pickle.load(f)
-    x_test = data[0].astype(np.float32)
-    y_test = np.argmax(data[1], axis=1)
+    with open(data_dir+'/test_batch', 'rb') as f:
+        data_dict = pickle.load(f, encoding='bytes')
+    x_test = data_dict[b'data'].reshape((10000, 32, 32, 3), order='F')
+    x_test = np.rot90(images, k=3, axes=(1, 2)) / 255.0
+    y_test = np.array(data_dict[b'labels'])
+    
     
     x_train = np.transpose(x_train, (0, 3, 1, 2))
     x_test = np.transpose(x_test, (0, 3, 1, 2))
@@ -197,12 +207,12 @@ def load_cifar(data_dir, W, iid, per_user_test=False):
     # split into iid/non-iid and users
     if iid:
         x_train, y_train = co_shuffle_split(x_train, y_train, W)
-        if per_user_test:
+        if user_test:
             x_test, y_test = co_shuffle_split(x_test, y_test, W)
     
     else:
         x_train, y_train, assign = shard_split(x_train, y_train, W, W*2)
-        if per_user_test:
+        if user_test:
             x_test, y_test, _ = shard_split(x_test, y_test, W, W*2, assign)
             
     return (x_train, y_train), (x_test, y_test)
