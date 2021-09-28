@@ -2,7 +2,7 @@ import numpy as np
 import pickle
 import torch
 from progressbar import progressbar
-
+from models import NumpyModel
 
 
 def init_stats_arrays(T):
