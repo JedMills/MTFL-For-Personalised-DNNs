@@ -267,12 +267,6 @@ def run_per_fedavg( data_feeders, test_data, model, beta, T, M, K, B,
                 x, y = data_feeders[user_idx].next_batch(B)
                 loss, acc = model.train_step(x, y)
                 
-                logits = model.forward(x)
-                loss = model.loss_fn(logits, y)
-                model.optim.zero_grad()
-                loss.backward()        
-                model.optim.step()
-                
                 x, y = data_feeders[user_idx].next_batch(B)
                 logits = model.forward(x)
                 loss = model.loss_fn(logits, y)
