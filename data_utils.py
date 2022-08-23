@@ -197,7 +197,7 @@ def load_cifar(data_dir, W, iid, user_test=False):
     with open(data_dir+'/test_batch', 'rb') as f:
         data_dict = pickle.load(f, encoding='bytes')
     x_test = data_dict[b'data'].reshape((10000, 32, 32, 3), order='F')
-    x_test = np.rot90(images, k=3, axes=(1, 2)) / 255.0
+    x_test = np.rot90(x_test, k=3, axes=(1, 2)) / 255.0
     y_test = np.array(data_dict[b'labels'])
     
     
