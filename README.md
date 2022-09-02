@@ -26,13 +26,13 @@ MTFL(FedAdam) with private u,s,y,B on MNIST with 400 workers, C=1.0 participatio
 `python main.py -dset mnist -alg fedadam -C 1.0 -B 20 -T 500 -E 1 -device gpu -W 400 -seed 0 -lr 0.3 -noisy_frac 0.0 -bn_private usyb -beta1 0.9 -beta2 0.999 -epsilon 1e-4 -server_lr 0.01`
 
 MTFL(FedAvg-Adam) with private y,b on CIFAR10, 400 workers, C=0.5 participation rate, (also from Table 1), with client learning rate 0.003, client Adam parameters beta1=0.9, beta2=0.999, epsilon=1e-7:
-`python main.py -dset cifar -alg fedavg-adam -C 0.5 -B 20 -T 500 -E 1 -device gpu -W 400 -seed 0 -lr 0.003 -noisy_frac 0.0 -bn_private usyb -beta1 0.9 -beta2 0.999 -epsilon 1e-7`
+`python main.py -dset cifar10 -alg fedavg-adam -C 0.5 -B 20 -T 500 -E 1 -device gpu -W 400 -seed 0 -lr 0.003 -noisy_frac 0.0 -bn_private usyb -beta1 0.9 -beta2 0.999 -epsilon 1e-7`
 
 pFedMe on MNIST with 200 workers and client participation rate 0.5 (shown in Fig. 5 a) for 200 rounds:
 `python main.py -dset mnist -alg pfedme -C 0.5 -B 20 -T 200 -E 1 -device gpu -W 200 -seed 0 -lr 0.3 -noisy_frac 0.0 -beta 1.0 -lamda 1.0`
 
 Per-FedAvg on CIFAR10 with 400 workers, client participation rate 1.0, for 200 rounds (Fig. 5 h):
-`python main.py -dset cifar -alg perfedavg -C 1.0 -B 20 -T 200 -E 1 -device gpu -W 200 -seed 0 -lr 0.1 -noisy_frac 0.0 -beta 0.1`
+`python main.py -dset cifar10 -alg perfedavg -C 1.0 -B 20 -T 200 -E 1 -device gpu -W 200 -seed 0 -lr 0.1 -noisy_frac 0.0 -beta 0.1`
 
 
 ### Output
