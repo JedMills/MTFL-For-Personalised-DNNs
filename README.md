@@ -42,6 +42,10 @@ For pFedMe and Per-FedAvg, each dictionary entry is a tuple of 2 values:
 `(test_errors, test_accuracies)`
 Each item in the tuples is a numpy array of length T. The training error and accuracy arrays report the average err/acc over the K local steps for the selected clients.
 
+### Hyperparameters 
+The `Fig-5-settings.md` file contains a table listing all the hyperparameters used in the experiments shown in Fig. 5 of the MTFL paper. These settings are the same as the settings used in Table 2 and Table 3. For example,  the file lists the settings for {MNIST, W=200, C=0.5, MTFL(FedAvg), private=yb} as lr=0.3. The learning rates for {MNIST, W=200, C=0.5, MTFL(FedAvg), private=us} and {MNIST, W=200, C=0.5, MTFL(FedAvg), private=usyb} were also lr=0.3.
+
+
 ### References
 [1] [_Adaptive Federated Optimization_](https://openreview.net/forum?id=LkFG3lB13U5), Reddi et al. ICLR 2021.
 
